@@ -1,5 +1,6 @@
 const { buildSchema } = require('graphql');
-const Phonebooks = require('../models/Phonebooks')
+const { Op } = require("sequelize");
+const {Phonebooks} = require('../models')
 
 const schema = buildSchema(`
   scalar Date
@@ -10,75 +11,107 @@ const schema = buildSchema(`
   }
 
   type Phonebook {
-    _id: ID!
+    id: ID!
     name: String
     phone: String
     createdAt: Date
+    updatedAt: Date
   }
 
   type Query {
     getPhonebooks: [Phonebook]
-    getPhonebook(_id: ID!): Phonebook
+    getPhonebook(id: ID!): Phonebook
     searchPhonebooks(name: String, phone: String, sort: String): [Phonebook]
   }
 
   type Mutation {
     createPhonebook(input: PhonebookInput): Phonebook
-    updatePhonebook(_id: ID!, input: PhonebookInput): Phonebook
-    deletePhonebook(_id: ID!): Phonebook
+    updatePhonebook(id: ID!, input: PhonebookInput): Phonebook
+    deletePhonebook(id: ID!): Phonebook
   }
 `);
 
 const solution = {
   getPhonebooks: async () => {
     try {
-      const phonebook = Phonebooks.find()
+      const phonebook = Phonebooks.findAll({})
       return phonebook
     } catch (err) {
       throw new Error('gagal ambil data');
     }
   },
-  getPhonebook: async ({ _id }) => {
+  getPhonebook: async ({ id }) => {
     try {
-      const phonebook = await Phonebooks.findOne({ _id: _id })
+      const phonebook = await Phonebooks.findOne({ where: { id: id } })
       return phonebook
     } catch (err) {
       throw new Error('gagal ambil data');
     }
   },
   searchPhonebooks: async ({ name, phone, sort }) => {
+    if(!sort){
+      sort=['id','ASC']
+    }
     try {
       if (sort) {
         switch (sort) {
           case 'id-desc':
-            sort = { createdAt: -1 }
+            sort = ['id','DESC']
             break
           case 'name-asc':
-            sort = { name: 1 }
+            sort = ['name','ASC']
             break
           case 'name-desc':
-            sort = { name: -1 }
+            sort = ['name','DESC']
             break
           case 'phone-asc':
-            sort = { phone: 1 }
+            sort = ['phone','ASC']
             break
           case 'phone-desc':
-            sort = { phone: -1 }
+            sort = ['phone','DESC']
             break
           case 'id-asc':
           default:
+            sort=['id','ASC']
             break
         }
       }
       let data
       if (!name && !phone) {
-        data = await Phonebooks.find().sort(sort)
+        data = await Phonebooks.findAll({
+          order:[sort]
+        })
       } else if (!name && phone) {
-        data = await Phonebooks.find({ 'phone': { $regex: new RegExp(phone, 'i') } }).sort(sort)
+        data = await Phonebooks.findAll({
+          where:{
+            phone:{
+              [Op.substring]:phone
+            }
+          },
+          order:[sort], 
+        })
       } else if (name && !phone) {
-        data = await Phonebooks.find({ 'name': { $regex: new RegExp(name, 'i') } }).sort(sort)
+        console.log(sort)
+        data = await Phonebooks.findAll({
+          where:{
+            name:{
+              [Op.substring]:name
+            }
+          },
+          order:[sort],  
+        })
       } else if (name && phone) {
-        data = await Phonebooks.find({ 'name': { $regex: new RegExp(name, 'i') }, 'phone': { $regex: new RegExp(phone, 'i') } }).sort(sort)
+        data = await Phonebooks.findAll({
+          where:{
+            phone:{
+              [Op.substring]:phone
+            },
+            name:{
+              [Op.substring]:name
+            }
+          },
+          order:[sort],  
+        })
       }
       return data
     } catch (err) {
@@ -93,17 +126,29 @@ const solution = {
       throw new Error('gagal ambil data');
     }
   },
-  updatePhonebook: async ({ _id, input }) => {
+  updatePhonebook: async ({ id, input }) => {
     try {
-      const phonebook = await Phonebooks.findByIdAndUpdate(_id, input, { new: true })
-      return phonebook
+      const phonebook = await Phonebooks.update(input, {
+        where:{
+          id:id
+        }
+      }).then(function(result){
+        return result
+      })
     } catch (err) {
       throw new Error('gagal ambil data');
     }
   },
-  deletePhonebook: async ({ _id }) => {
+  deletePhonebook: async ({ id }) => {
     try {
-      const phonebook = await Phonebooks.findByIdAndDelete(_id)
+      const phonebook = await Phonebooks.destroy({
+        where:{
+          id:id
+        }
+      }).then(function(result){
+        console.log(result)
+      })
+      console.log(phonebook)
       return phonebook
     } catch (err) {
       throw new Error('gagal ambil data');

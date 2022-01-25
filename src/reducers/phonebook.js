@@ -7,15 +7,15 @@ const phonebook = (state = { phonebooks: [], live: false }, action) => {
         case actions.ADD_DRAW_PHONEBOOK:
             return {
                 phonebooks: [...state.phonebooks, {
-                    _id: action._id, name: action.name, phone: action.phone, sent: true
+                    id: action.id, name: action.name, phone: action.phone, sent: true
                 }],
                 live: false
             }
         case actions.ADD_PHONEBOOK_SUCCESS:
             return {
                 phonebooks: state.phonebooks.map(item => {
-                    if (item._id === action.oldId)
-                        item._id = action.phonebook._id
+                    if (item.id === action.oldId)
+                        item.id = action.phonebook.id
                     return item
                 }),
                 live: true
@@ -23,7 +23,7 @@ const phonebook = (state = { phonebooks: [], live: false }, action) => {
         case actions.ADD_PHONEBOOK_FAILURE:
             return {
                 phonebooks: state.phonebooks.map(item => {
-                    if (item._id === action._id)
+                    if (item.id === action.id)
                         item.sent = false
                     return item
                 }),
@@ -32,16 +32,16 @@ const phonebook = (state = { phonebooks: [], live: false }, action) => {
         case actions.REMOVE_PHONEBOOK_SUCCESS:
             return {
                 phonebooks: state.phonebooks.filter(item => {
-                    return item._id !== action._id
+                    return item.id !== action.id
                 }),
                 live: true
             }
         case actions.RESEND_PHONEBOOK_SUCCESS:
             return {
                 phonebooks: state.phonebooks.map(item => {
-                    if (item._id === action.oldId) {
+                    if (item.id === action.oldId) {
                         item.sent = true
-                        item._id = action.newId
+                        item.id = action.newId
                     }
                     return item
                 }),
@@ -49,13 +49,13 @@ const phonebook = (state = { phonebooks: [], live: false }, action) => {
             }
         case actions.RESEND_PHONEBOOK_CANCEL:
             return {
-                phonebooks: state.phonebooks.filter(i => { return i._id !== action._id }),
+                phonebooks: state.phonebooks.filter(i => { return i.id !== action.id }),
                 live: true
             }
         case actions.EDIT_PHONEBOOK_SUCCESS:
             return {
                 phonebooks: state.phonebooks.map(item => {
-                    if (item._id === action._id) {
+                    if (item.id === action.id) {
                         item.name = action.name
                         item.phone = action.phone
                     }

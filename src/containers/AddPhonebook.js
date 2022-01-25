@@ -52,7 +52,7 @@ class AddPhonebook extends Component {
             <>
                 <Button
                     onClick={() => this.setState({ open: !this.state.open })}
-                    variant="outline-primary"
+                    variant="light"
                 >
                     <i className="bi bi-plus-circle"></i> Add
                 </Button>

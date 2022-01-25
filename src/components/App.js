@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap'
 import Title from './Title'
 import AddPhonebook from '../containers/AddPhonebook'
 import TablePhonebook from '../containers/TablePhonebook'
+import Wave from './Wave'
 
 export default class App extends Component {
     constructor(props) {
@@ -21,17 +22,20 @@ export default class App extends Component {
 
     render() {
         return (
-            <Container className="mt-4">
-                <Title />
-                <AddPhonebook
-                    showAlertCon={this.state.showAlertCon}
-                    setShowAlertCon={this.setShowAlertCon}
-                />
-                <TablePhonebook
-                    showAlertCon={this.state.showAlertCon}
-                    setShowAlertCon={this.setShowAlertCon}
-                />
-            </Container>
+            <>
+                <Wave />
+                <Container className="mt-4">
+                    <Title />
+                    <AddPhonebook
+                        showAlertCon={this.state.showAlertCon}
+                        setShowAlertCon={this.setShowAlertCon}
+                    />
+                    <TablePhonebook
+                        showAlertCon={this.state.showAlertCon}
+                        setShowAlertCon={this.setShowAlertCon}
+                    />
+                </Container>
+            </>
         )
     }
 }

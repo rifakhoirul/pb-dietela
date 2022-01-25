@@ -183,9 +183,9 @@ class TablePhonebook extends Component {
           <tbody>
             {this.state.loading && (<tr><td colSpan="4" className="text-center"><Spinner animation="border" /></td></tr>)}
             {currentPosts.map((item, index) => {
-              if (this.state.editId === item._id) {
+              if (this.state.editId === item.id) {
                 return (
-                  <tr key={item._id}>
+                  <tr key={item.id}>
                     <td className="align-middle">{index + 1 + ((this.state.currentPage - 1) * this.state.postsPerPage)}</td>
                     <td className="align-middle"><Form onSubmit={this.handleSubmitEdit}><Form.Control size="sm" type="text" value={this.state.editName} onChange={this.handleEditName} /></Form></td>
                     <td className="align-middle"><Form onSubmit={this.handleSubmitEdit}><Form.Control size="sm" type="text" value={this.state.editPhone} onChange={this.handleEditPhone} /></Form></td>
@@ -194,20 +194,20 @@ class TablePhonebook extends Component {
                 )
               } else if (item.sent === false) {
                 return (
-                  <tr key={item._id}>
+                  <tr key={item.id}>
                     <td className="align-middle text-danger">{index + 1 + ((this.state.currentPage - 1) * this.state.postsPerPage)}</td>
                     <td className="align-middle text-danger">{item.name}</td>
                     <td className="align-middle text-danger">{item.phone}</td>
-                    <td className="align-middle"><Button onClick={() => { this.handleResend(item._id, item.name, item.phone) }} variant="warning" className="me-1" size="sm"><i className="bi bi-arrow-clockwise"></i> Retry</Button><Button variant="secondary" size="sm" onClick={() => this.props.cancelResend(item._id)}><i className="bi bi-x-circle"></i> Cancel</Button></td>
+                    <td className="align-middle"><Button onClick={() => { this.handleResend(item.id, item.name, item.phone) }} variant="warning" className="me-1" size="sm"><i className="bi bi-arrow-clockwise"></i> Retry</Button><Button variant="secondary" size="sm" onClick={() => this.props.cancelResend(item.id)}><i className="bi bi-x-circle"></i> Cancel</Button></td>
                   </tr>
                 )
               } else {
                 return (
-                  <tr key={item._id}>
+                  <tr key={item.id}>
                     <td className="align-middle">{index + 1 + ((this.state.currentPage - 1) * this.state.postsPerPage)}</td>
                     <td className="align-middle">{item.name}</td>
                     <td className="align-middle">{item.phone}</td>
-                    <td className="align-middle"><Button onClick={() => { this.handleEdit(item._id, item.name, item.phone) }} variant="success" className="me-1" size="sm"><i className="bi bi-pencil"></i> Edit</Button><Button variant="danger" size="sm" onClick={() => this.handleDelete(item._id)}><i className="bi bi-trash"></i> Delete</Button></td>
+                    <td className="align-middle"><Button onClick={() => { this.handleEdit(item.id, item.name, item.phone) }} variant="success" className="me-1" size="sm"><i className="bi bi-pencil"></i> Edit</Button><Button variant="danger" size="sm" onClick={() => this.handleDelete(item.id)}><i className="bi bi-trash"></i> Delete</Button></td>
                   </tr>
                 )
               }
