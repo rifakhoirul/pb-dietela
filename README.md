@@ -14,8 +14,8 @@ cd pb-dietela
 # Install dependencies for client
 npm install
 
-# Install dependencies for server
-cd server && npm install
+# Install dependencies for api
+cd api && npm install
 ```
 
 ## Config API
