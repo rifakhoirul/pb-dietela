@@ -30,15 +30,17 @@ DB_HOST="127.0.0.1"
 3. Open terimnal, run:
 ```bash
 npx sequelize-cli db:create
+
 npx sequelize-cli db:migrate
+
 npx sequelize-cli db:seed:all
 ```
-4. Start api
+4. Start API
 ```bash
 npm run dev
 ```
 ## Start Client
 In root folder, run:
 ```bash
-npm run start
+npm start
 ```
