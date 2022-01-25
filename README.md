@@ -27,7 +27,7 @@ DB_PASSWORD="password"
 DB_DATABASE="databaseName"
 DB_HOST="127.0.0.1"
 ```
-3. Open terimnal, run:
+3. Open terminal, run:
 ```bash
 npx sequelize-cli db:create
 
@@ -40,7 +40,7 @@ npx sequelize-cli db:seed:all
 npm run dev
 ```
 ## Start Client
-In root folder, run:
+In root folder, open terminal and run:
 ```bash
 npm start
 ```
