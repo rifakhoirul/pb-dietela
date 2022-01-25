@@ -13,7 +13,6 @@
     "express": "~4.16.1",
     "express-graphql": "^0.12.0",
     "graphql": "^16.2.0",
-    "mongoose": "^6.1.2",
     "morgan": "~1.9.1",
     "pg": "^8.7.1",
     "sequelize": "^6.14.1"
